@@ -6,7 +6,12 @@
 ## IMPORTANT 
 
 - Render only returns **one component inside a div**. *If you try to return `<h1>` below the div it will crash*
-- custom functions can not add more functiosn 
+- custom functions can not add more functions 
+- **Never modify a state variable**, first create a copy, modify that and set the state to the copy. 
+      
+      
+Custom props all need to be defined 
+
 ```js
 <Backdrop />                     // FINE
 <Backdrop onClick={myHandler} /> // NOT FINE  (Backdrop does not have onClick prop defined)
