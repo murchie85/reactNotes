@@ -5,7 +5,7 @@
 
 ## IMPORTANT 
 
-- Render only returns one component inside a div. If you try to return `<h1>` below the div it will crash  
+- Render only returns **one component inside a div**. *If you try to return `<h1>` below the div it will crash*
 - custom functions can not add more functiosn 
 ```js
 <Backdrop />                     // FINE
