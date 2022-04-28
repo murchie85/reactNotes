@@ -44,7 +44,32 @@ Return value 1: current state i.e. False
 Return value 2: Function to set this value to new one
 
 ```js
-const [aIsOn, setAIsOFF] = useState(false)
+const [values, functionToSetValues] = useState([])
+```
+
+
+## LOCAL STORAGE  
+
+
+```js 
+
+const LOCAL_STORAGE_KEY = 'todoApp.todo'
+
+export default function App() {
+
+  // INIT LIST ONCE
+  useEffect( ()=>{
+    // parse from storage key
+    const storedList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+    if(storedList) setTodos(storedList)
+  },[] )
+
+  //  UPDATE ON CHANGE
+  useEffect(()=>{
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(storedList))
+  },[storedList])
+
+
 ```
 
 
