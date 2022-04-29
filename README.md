@@ -194,6 +194,269 @@ function App(){
 
 <br></br><br></br><br></br><br></br><br></br>  
 
+
+## HOOKS: useContext
+  
+( `createContext first`, then useContext deep down without needing to pass kid all the way there with `useContext`)
+
+  
+- Allows you to work with reacts `context api` 
+- A mechanism which allows you to share or scope values thoughout the entire component tree.
+- to share mood accross multiple disconnected components we crate context 
+- one comp might be happy so we use a `context provider`  to scope the `happy mood` there 
+
+
+```js
+const moods = {
+  happy: '😀'
+  sad:   '😢'
+}
+
+const MoodContext = createContext(moods);
+
+function App(props){
+  return(
+
+    // inherits the value and doesn't need to pass props down to chilren
+    <MoodContext.Provider value={moods.happy}>
+      <MoodEmoji />
+    </MoodContext.Provider>
+    
+  );
+}
+
+// this updates anytime it updates further up
+function MoodEmoji(){
+  const mood = useContext(MoodContext);    // Consume value from nearest parent provider 
+
+  return <p>{ mood } </p>
+
+}
+
+
+```
+
+It used to be longer using `context.consumer` i.e. 
+
+```js
+
+
+function MoodEmoji(){
+  return <MoodContext.Consumer>
+    { ({mood}) => <p>{mood}</p>  }
+    </MoodContext.Consumer>
+}
+```
+
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useRef  
+ 
+Allows you to create a mutalbe object 
+That keeps the same reference between renders
+Like setState, but it `DOESN'T TRIGGER A RERENDER WHEN VALUE CHANGES`
+So clicking button below wont increment because it wont trigger a rerender
+
+
+```js
+
+function App(){
+  const count = useRef(0);
+
+  return(
+    <button onclick={ () => count.curent++ }>
+      {count.current}
+    </button>
+
+  )
+}
+
+
+```
+
+
+  
+- A more common use case is to `grab html elements from the DOM`  
+
+```js
+
+function App(){
+
+  const myBtn = useRef(null);
+  
+  // programatically clicks the button
+  const clickIt = ()=> myBtn.current.click()
+
+  return(
+    <button ref={myBtn}> <button>
+  )
+}
+
+
+}
+
+
+
+```
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useReducer()
+
+- similar to `setState()` 
+- But different way to manage state  
+- Uses `redux pattern`  
+Instead of updating state directly:  
+  
+1. set `useReducer`
+2. give it a function i.e. reducer
+3. set it to the value and the hook ref name
+4. hookref name can be  called which has a type and optional payload
+5. The `useReducer` function you gave it passes state and action
+
+The dispatcher is an action that has a `type` and an optional data payload
+
+
+```js
+
+function App(){
+  
+  // first is the value, second is function that dispatches an action
+  const [state, dispatch] =  useReducer(reducer,0);  // reducer is the function we define, 0 is the initial state
+  
+  return(
+    <>
+     Count: {state}
+     <button onClick={ ()=> dispatch({type:'decriment'}) }> <button>
+    </>
+  )
+  }
+
+```
+
+```js
+
+function reducer(state,action){
+  switch(action.type){
+    case 'increment':
+      return state + 1;
+    case 'decriment':
+      return state - 1;
+    default:
+      throw new Error();
+  }
+}
+
+```  
+  
+This helps if program gets too big (an alternate for setState)
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+
+
+
+## HOOKS: useMemo()
+
+- Reduces required compute
+- `caution` use only for expensive calculations 
+
+
+imagine we have a counter 
+but we compute another one `expensiveCount`
+
+
+```js
+// only when count chanegs 
+const expensiveCount = useMemo( ()=>{
+  return count**2;
+}, [count])
+
+```
+
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useCallback()
+
+- like `useMemo()` but when you want to memoize an entire function
+  
+when you define a function in a component 
+a new function object is created each time a component is re-rendered
+sometimes this is performance intensive  
+  
+- common use case is when you pass function to multiple children components 
+- **PREVENTS RERENDER FOR EVERY CHILD**   cus they will use same object.  
+  
+
+
+
+```js
+function App(){
+  const [count,setCount] = useState(60);
+  const showCount = useCallback( ()=> {
+    alert(`Count ${count}`)
+  }, [count])
+
+  return <> <someChild handler={showCount}>
+}
+
+```
+  
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useImperativeHandle()  
+  
+- confusing  
+- but allows you to modify a lib that you share with others 
+- rare use 
+
+if you build reusable component
+you may need access to underlying DOM 
+then forward so consumers of lib can use 
+
+you could grab it using `useRef` from earlier
+then wrap it using `forwardRef` to make it available when someone uses the component.  
+  
+`useImperativeHandle()` comes in if you want to `change the behaviour` of the exposed ref 
+  
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useLayoutEffect()    
+  
+- like useEffect
+- will run after rendering comp
+- but before its painted to screen
+
+**blocks visual updates until your callback is finished**  
+ 
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+
+## HOOKS: useDebugValue()
+
+- only good for custom hooks  
+- Makes it possible to define custom debug values
+- that get shown in react debug in dev console  
+  
+```js
+useDebugValue(displayName ?? 'loading....')
+```
+
+
+
+<br></br><br></br><br></br><br></br><br></br>  
+
 ## SYNTAX  
 
 - referring to a function 
