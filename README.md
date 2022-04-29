@@ -25,7 +25,17 @@ Custom props all need to be defined
 
 - hooks give you access to lower level features of react outside of the context of a component. 
   
-| **useSuperPower()** | 
+**useSuperPower()**  
+  
+RULE: ONLY CALL AT THE TOP LEVEL OF A FUNCTIONAL COMPONENT   
+*(They don't work inside nested functions, loops or anything else)*. 
+  
+```js
+function App(){
+
+
+}
+```
 
 
 ## SYNTAX NOTES  
