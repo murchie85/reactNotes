@@ -1,7 +1,14 @@
 # REACT NOTES
 
+  
+## CONTENTS  
+  
 
-[Jump to getting started notes](#Getting-Started-with-Create-React-App)
+- [HOOKS](#HOOKS)
+- [SYNTAX](#SYNTAX)  
+- [LOCAL STORAGE](#LOCAL-STORAGE)
+- [GENERAL NOTES](#GENERAL-NOTES)
+<br></br>
 
 ## IMPORTANT 
 
@@ -20,25 +27,167 @@ Custom props all need to be defined
 - We would need to specify it there as a prop
 - `myHandler` is within this class/function
 
+<br></br><br></br><br></br><br></br><br></br>  
 
-## HOOKS 
+## HOOKS
 
 - hooks give you access to lower level features of react outside of the context of a component. 
-  
-**useSuperPower()**  
-  
+
+```js
+useSuperPower()
+```  
+
 RULE: ONLY CALL AT THE TOP LEVEL OF A FUNCTIONAL COMPONENT   
 *(They don't work inside nested functions, loops or anything else)*. 
   
 ```js
 function App(){
 
+useHook();           //CORRECT  
 
+const fun = (){
+  useHook();        //INCORRECT
+  console.log(fun)
+}
+
+}
+```  
+  
+- Exception to the rule is in custom shooks  
+  
+## HOOKS: UseState  
+
+When `data changes` `re-render the UI`  
+We don't assing new  value, we call the second function that assigns new value    
+
+Return value 1: current state i.e. False   
+Return value 2: Function to set this value to new one  
+
+```js
+const [values, functionToSetValues] = useState([])
+```
+  
+Example:  
+  
+```js
+import { useState } from 'react';
+
+function App(){
+  const [count,setCount] = useState(0)
+
+  return(
+    <button onClick={()=> setCount(count+1) }>
+      {count}
+    </button>
+  )
+}
+```
+   
+
+
+
+## HOOKS: useEffect  
+
+Need to first understand `lifecycle`  
+  
+
+- Simplified breakdown  
+
+```js
+componentDidMount(){
+  // initialized once
+}
+
+componentDidUpdate(){
+  // State udpated 
+}
+
+componentWillUnmount(){
+  // Destroyed once
+}
+
+```
+  
+    
+Keep this in mind  as we talk about the `useEffect` hook
+It allows us to implement logic for all of them within a single function
+- It's a function
+- That takes a function you define as its first argument
+- React will run your function/side effect after it has udpated the dom 
+- With the current implementation it will run anytime stateful data changes on component  
+- So it runs once on default, then again when state(count) is updated
+
+
+```js
+import { useState } from 'react';
+
+function App(){
+  const [count,setCount] = useState(0)
+
+  useEffect(()=>{
+    alert('hello side effect!')                 // call anytime there is a change
+    return ()=> alert('Goodbye component' )     // call prior to component dismount (destroyed)
+  },[] )                                        // specifies the dependencies to call (empty=call once, [count] = when count changes)
+
+  return(
+    <button onClick={()=> setCount(count+1) }>
+      {count}
+    </button>
+  )
 }
 ```
 
 
-## SYNTAX NOTES  
+
+- But sometimes we want fine control
+- I.e. We want to fetch data once component initialised 
+- Then udpate state async once data is fetched
+- This would be an infinte loop
+  - fetch
+  - update state
+  - triggers fetch
+
+### Fix infinite loop 
+
+- adding an array of dependencies
+- Empty array only runs once 
+
+```js
+import { useState } from 'react';
+
+function App(){
+  const [count,setCount] = useState(0)
+
+  useEffect(()=>{
+    fetch('foo').then(()=> setLoaded(true)  )
+  },[count] )                                     // Runs when count changes
+
+  return(
+    <button onClick={()=> setCount(count+1) }>
+      {count}
+    </button>
+  )
+}
+```
+
+
+### TEAR DOWN
+  
+- Calls the function returened just before it's destroyed   
+
+```js
+  useEffect(()=>{
+
+    alert('hello side effect!')
+    return ()=> alert('Goodbye component' )
+
+  } )
+
+```
+
+<br></br><br></br><br></br><br></br><br></br>  
+
+## SYNTAX  
 
 - referring to a function 
 
@@ -50,21 +199,9 @@ onClick={deletehandler}
 ```
   
 
-## Function notes 
+<br></br><br></br><br></br><br></br><br></br>    
 
-**useState** 
-   
-We don't assing new  value, we call the second function that assigns new value  
-
-Return value 1: current state i.e. False 
-Return value 2: Function to set this value to new one
-
-```js
-const [values, functionToSetValues] = useState([])
-```
-
-
-## LOCAL STORAGE  
+## LOCAL STORAGE 
 
 
 ```js 
@@ -88,8 +225,10 @@ export default function App() {
 
 ```
 
+<br></br><br></br><br></br><br></br><br></br>  
 
-## GENERAL NOTES 
+
+## GENERAL NOTES
 
 - **Components names should start with capital**
 - Main page is in the `public/index.html` that gets hijaced and dynamiced by react
