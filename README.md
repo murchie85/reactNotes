@@ -7,17 +7,22 @@
 - [HOOKS](#HOOKS)
 - [SYNTAX](#SYNTAX)  
 - [LOCAL STORAGE](#LOCAL-STORAGE)
-- [GENERAL NOTES](#GENERAL-NOTES)
+- [MORE NOTES](#GENERAL-NOTES)
 <br></br>  
   
 ![](https://bs-uploads.toptal.io/blackfish-uploads/components/seo/content/og_image_file/og_image/777655/react-context-api-4929b3703a1a7082d99b53eb1bbfc31f.png)
 
-## IMPORTANT 
+## GENERAL 
 
-- Render only returns **one component inside a div**. *If you try to return `<h1>` below the div it will crash*
+- **RENDER ONLY RETURNS ONE COMPONENT**. *If you try to return `<h1>` below the div it will crash* So use `<>` instead. 
 - custom functions can not add more functions 
 - **Never modify a state variable**, first create a copy, modify that and set the state to the copy. 
-      
+- **Components names should start with capital**
+- Main page is in the `public/index.html` that gets hijaced and dynamiced by react
+- `App.js` needs `export default App;` 
+- React is all about small modular components that call others
+- JS is imperative `we describe what should happen` 
+- React is declarative `we describe the target result` 
       
 Custom props all need to be defined 
 
@@ -230,14 +235,9 @@ export default function App() {
 <br></br><br></br><br></br><br></br><br></br>  
 
 
-## GENERAL NOTES
+## MORE NOTES
 
-- **Components names should start with capital**
-- Main page is in the `public/index.html` that gets hijaced and dynamiced by react
-- `App.js` needs `export default App;` 
-- React is all about small modular components that call others
-- JS is imperative `we describe what should happen` 
-- React is declarative `we describe the target result` 
+
 
 Using the main react [Tutorial](https://reactjs.org/tutorial/tutorial.html)
 
