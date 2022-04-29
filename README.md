@@ -21,6 +21,12 @@ Custom props all need to be defined
 - `myHandler` is within this class/function
 
 
+## HOOKS 
+
+- hooks give you access to lower level features of react outside of the context of a component. 
+  
+| **useSuperPower()** | 
+
 
 ## SYNTAX NOTES  
 
